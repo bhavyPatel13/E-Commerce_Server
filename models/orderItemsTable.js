@@ -1,6 +1,6 @@
-import database from "../database/db";
+import database from "../database/db.js";
 
-export const createOrderItemTable = () => {
+export const createOrderItemTable = async () => {
     try {
         const query = `
             CREATE TABLE IF NOT EXISTS order_items (

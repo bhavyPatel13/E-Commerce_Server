@@ -1,8 +1,8 @@
-import database from "../database/db";
+import database from "../database/db.js";
 
-export const createOrdersTable = () => {
+export const createOrdersTable = async () => {
     try {
-        const query = `     
+        const query = `
             CREATE TABLE IF NOT EXISTS orders (
                 id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
                 buyer_id UUID NOT NULL,
