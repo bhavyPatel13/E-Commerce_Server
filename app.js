@@ -5,6 +5,9 @@ import fileUpload from "express-fileupload";
 import { CreateTables } from "./utils/createTables.js";
 import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 import { router } from "./router/authRoutes.js";
+import { config } from "dotenv";
+
+config({path : "./config/config.env"})
 
 const app = express();
 
