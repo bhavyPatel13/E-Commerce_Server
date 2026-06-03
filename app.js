@@ -6,8 +6,9 @@ import { CreateTables } from "./utils/createTables.js";
 import { errorMiddleware } from "./middlewares/errorMiddleware.js";
 import { router } from "./router/authRoutes.js";
 import { config } from "dotenv";
+import { productRouter } from "./router/productsRoutes.js";
 
-config({path : "./config/config.env"})
+config({ path: "./config/config.env" });
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use(fileUpload({
 }));
 
 app.use("/api/v1/auth", router);
+app.use("/api/v1/product", productRouter);
 
 CreateTables();
 app.use(errorMiddleware);
