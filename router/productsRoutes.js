@@ -2,8 +2,8 @@ import express from "express";
 import {
     createProduct,
     fetchAllProducts,
-    // updateProduct,
-    // deleteProduct,
+    updateProduct,
+    deleteProduct,
     // fetchSingleProduct,
     // postProductReview,
     // deleteReview,
@@ -27,16 +27,16 @@ productRouter.get("/", fetchAllProducts);
 // productRouter.get("/singleProduct/:productId", fetchSingleProduct);
 // productRouter.put("/post-new/review/:productId", isAuthenticated, postProductReview);
 // productRouter.delete("/delete/review/:productId", isAuthenticated, deleteReview);
-// productRouter.put(
-//     "/admin/update/:productId",
-//     isAuthenticated,
-//     autherizeRoles("Admin"),
-//     updateProduct
-// );
-// productRouter.delete(
-//     "/admin/delete/:productId",
-//     isAuthenticated,
-//     autherizeRoles("Admin"),
-//     deleteProduct
-// );
+productRouter.put(
+    "/admin/update/:productId",
+    isAuthenticated,
+    autherizeRoles("Admin"),
+    updateProduct
+);
+productRouter.delete(
+    "/admin/delete/:productId",
+    isAuthenticated,
+    autherizeRoles("Admin"),
+    deleteProduct
+);
 // productRouter.post("/ai-search", isAuthenticated, fetchAIFilteredProducts);

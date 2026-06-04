@@ -1,7 +1,7 @@
 import database from "../database/db.js";
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import ErrorHandler from "../middlewares/errorMiddleware.js";
-import { v2 as cloudinary } from "cloudinary"
+import { v2 as cloudinary } from "cloudinary";
 
 export const createProduct = catchAsyncError(async (req, res, next) => {
     const { name, description, price, category, stock } = req.body;
@@ -174,3 +174,67 @@ export const fetchAllProducts = catchAsyncError(async (req, res, next) => {
         topRatedProducts: topRatedResult.rows
     });
 });
+
+
+export const updateProduct = catchAsyncError(async (req, res, next) => {
+    const { productId } = req.params;
+    const { name, description, price, category, stock } = req.body;
+
+    if (!name || !description || !price || !category || !stock) {
+        return next(new ErrorHandler("Please provide complete product details.", 400));
+    }
+    console.log("Hello");
+
+    const product = await database.query(
+        "SELECT * FROM products WHERE id = $1",
+        [productId]
+    );
+
+    if (product.rows.length === 0) {
+        return next(new ErrorHandler("Product not found", 404));
+    }
+
+    // Fixed: Added the missing comma right after the template literal string
+    const result = await database.query(
+        `UPDATE products SET name = $1, description = $2, price = $3, category = $4, stock = $5 WHERE id = $6 RETURNING *`,
+        [name, description, price / 95.59, category, stock, productId]
+    );
+    res.status(200).json({
+        success: true,
+        message: "Product updated successfully.",
+        updatedProduct: result.rows[0]
+    });
+});
+
+
+export const deleteProduct = catchAsyncError(async (req, res, next) => {
+    const { productId } = req.params;
+    const product = await database.query("SELECT * FROM products WHERE id = $1", [
+        productId
+    ]);
+    if (product.rows.length === 0) {
+        return next(new ErrorHandler("Product not found", 404));
+    }
+
+    const images = product.rows[0].images;
+
+    const deleteResult = await database.query("DELETE FROM products WHERE id = $1 RETURNING *",
+        [productId]
+    );
+
+    if (deleteResult.rows.length === 0) {
+        return next(new ErrorHandler("Failed to delete product", 500));
+    }
+
+    //Delete image from cloudinary
+    if (images && images.length > 0) {
+        for (const image of images) {
+            await cloudinary.uploader.destroy(image.public_id);
+        }
+    }
+
+    res.status(200).json({
+        success: true,
+        message: "Product deleted successfully."
+    })
+})
