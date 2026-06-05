@@ -4,9 +4,9 @@ import {
     fetchAllProducts,
     updateProduct,
     deleteProduct,
-    // fetchSingleProduct,
-    // postProductReview,
-    // deleteReview,
+    fetchSingleProduct,
+    postProductReview,
+    deleteReview,
     // fetchAIFilteredProducts,
 } from "../controllers/productController.js";
 import {
@@ -24,9 +24,6 @@ productRouter.post(
     createProduct
 );
 productRouter.get("/", fetchAllProducts);
-// productRouter.get("/singleProduct/:productId", fetchSingleProduct);
-// productRouter.put("/post-new/review/:productId", isAuthenticated, postProductReview);
-// productRouter.delete("/delete/review/:productId", isAuthenticated, deleteReview);
 productRouter.put(
     "/admin/update/:productId",
     isAuthenticated,
@@ -39,4 +36,7 @@ productRouter.delete(
     autherizeRoles("Admin"),
     deleteProduct
 );
+productRouter.get("/singleProduct/:productId", fetchSingleProduct);
+productRouter.put("/post-new/review/:productId", isAuthenticated, postProductReview);
+productRouter.delete("/delete/review/:productId", isAuthenticated, deleteReview);
 // productRouter.post("/ai-search", isAuthenticated, fetchAIFilteredProducts);
