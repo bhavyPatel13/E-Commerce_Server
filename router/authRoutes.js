@@ -11,13 +11,13 @@ import {
 } from '../controllers/authController.js';
 import { isAuthenticated } from '../middlewares/authMiddleware.js';
 
-export const router = express.Router();
+export const authRouter = express.Router();
 
-router.post("/register", register);
-router.post("/login", login);
-router.get("/me", isAuthenticated, getUser);
-router.get("/logout", isAuthenticated, logout);
-router.post("/password/forget", forgetPassword);
-router.put("/password/reset/:token", resetPassword);
-router.put("/password/update", isAuthenticated, updatePassword);
-router.put("/profile/update", isAuthenticated, updateProfile);
+authRouter.post("/register", register);
+authRouter.post("/login", login);
+authRouter.get("/me", isAuthenticated, getUser);
+authRouter.get("/logout", isAuthenticated, logout);
+authRouter.post("/password/forget", forgetPassword);
+authRouter.put("/password/reset/:token", resetPassword);
+authRouter.put("/password/update", isAuthenticated, updatePassword);
+authRouter.put("/profile/update", isAuthenticated, updateProfile);

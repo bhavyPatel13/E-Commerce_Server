@@ -1,0 +1,25 @@
+import database from "../database/db";
+import { catchAsyncError } from "../middlewares/catchAsyncError";
+
+export const getAllUser = catchAsyncError(async (req, res, next) => {
+    const page = parseInt(req.query.page )||1;
+
+    const totalUsersResult = await database.query("SELECT COUNT(*) FROM users WHERE role = $1",
+        ["User"]
+    );
+
+    const totalUsers = parseInt(totalUsersResult.rows[0].count);
+
+    const offset = (page - 1)*10;
+
+    const users = await database.query("SELECT * FROM users WHERE role = $1 ORDER BY created_at DESC LIMIT $2 OFFSET $3",
+        ["User", 10, offset0]
+    );
+
+    res.status(200).json({
+        success : true,
+        totalUsers,
+        currentPage : page,
+        users : users.rows
+    });
+})
